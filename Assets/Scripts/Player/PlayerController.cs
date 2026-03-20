@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _movementSpeedVer = 10;
 
     [Header("Rotation")]
-    [SerializeField] private float _rotationSpeed = 10;
+    [SerializeField] private float _rotationSpeedHor = 10;
+    [SerializeField] private float _rotationSpeedVer = 10;
     [SerializeField] private float _rotationMinVer = 10;
     [SerializeField] private float _rotationMaxVer = 10;
 
@@ -64,19 +66,22 @@ public class PlayerController : MonoBehaviour
 
     private void Rotation()
     {
-        Vector3 rotation = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0).normalized;
-        rotation *= _rotationSpeed * Time.deltaTime;
+        Vector3 rotation = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0);
 
-        if (rotation.x < _rotationMinVer)
+        rotation.x *= _rotationSpeedVer;
+        rotation.y *= _rotationSpeedHor;
+        rotation *= Time.deltaTime;
+
+        if (-rotation.x <= _rotationMinVer)
         {
-            rotation = new Vector3(_rotationMinVer, rotation.y, 0);
+            rotation.x = -_rotationMinVer;
         }
 
-        if (rotation.x > _rotationMaxVer)
+        if (-rotation.x >= _rotationMaxVer)
         {
-            rotation = new Vector3(_rotationMaxVer, rotation.y, 0);
+            rotation.x = -_rotationMaxVer;
         }
 
-        transform.Rotate(rotation);
+        transform.localEulerAngles += rotation;
     }
 }
