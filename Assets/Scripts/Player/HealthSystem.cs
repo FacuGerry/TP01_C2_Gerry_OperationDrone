@@ -3,15 +3,18 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
-    public static event Action<int> OnUpdateLife;
+    public static event Action<int, int> OnUpdateLife;
     public static event Action OnPlayerDie;
 
-    [SerializeField] private int _health;
+    [SerializeField] private int _maxHealth;
     [SerializeField] private int _damage;
+
+    private int _health;
 
     private void Start()
     {
-        OnUpdateLife?.Invoke(_health);
+        _health = _maxHealth;
+        OnUpdateLife?.Invoke(_health, _maxHealth);
     }
 
     private void OnEnable()
@@ -35,7 +38,7 @@ public class HealthSystem : MonoBehaviour
     private void OnPlayerCrashed_ReduceHealth()
     {
         _health -= _damage;
-        OnUpdateLife?.Invoke(_health);
+        OnUpdateLife?.Invoke(_health, _maxHealth);
         CheckLife();
     }
 }
