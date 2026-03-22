@@ -27,18 +27,14 @@ public class HealthSystem : MonoBehaviour
         CollisionController.OnPlayerCrashed -= OnPlayerCrashed_ReduceHealth;
     }
 
-    private void CheckLife()
-    {
-        if (_health <= 0)
-        {
-            OnPlayerDie?.Invoke();
-        }
-    }
-
     private void OnPlayerCrashed_ReduceHealth()
     {
         _health -= _damage;
+        if (_health <= 0)
+        {
+            _health = 0;
+            OnPlayerDie?.Invoke();
+        }
         OnUpdateLife?.Invoke(_health, _maxHealth);
-        CheckLife();
     }
 }
