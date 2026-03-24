@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 429210793}
   - component: {fileID: 429210795}
   - component: {fileID: 429210797}
+  - component: {fileID: 429210798}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -545,12 +546,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f52737b014ff184ba41406645b20bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  _keys: {fileID: 11400000, guid: 644afaf9758c58047b330a2ddadddb07, type: 2}
   _movementSpeedHor: 7
   _movementSpeedVer: 5
-  _rotationSpeedHor: 750
-  _rotationSpeedVer: 150
-  _rotationMinVer: -25
-  _rotationMaxVer: 50
 --- !u!54 &429210794
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -625,6 +623,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d53cf3b85006f4fabcb26c83e719fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollisionController
+--- !u!114 &429210798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429210788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19457ce99e599b04da6cb25049a2cf79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  _keys: {fileID: 11400000, guid: 644afaf9758c58047b330a2ddadddb07, type: 2}
+  _rotationSpeedHor: 750
+  _rotationSpeedVer: 750
+  _rotationMinVer: -25
+  _rotationMaxVer: 75
+  _cameraPosFirstPerson: {x: 0, y: 0.25, z: 0.25}
+  _cameraPosThirdPerson: {x: 0, y: 1.5, z: -3}
+  _cameraRotationFirstPerson: {x: 0, y: 0, z: 0}
+  _cameraRotationThirdPerson: {x: 15, y: 0, z: 0}
+  _camera: {fileID: 330585543}
+  _maxTime: 1.5
 --- !u!1 &826481435
 GameObject:
   m_ObjectHideFlags: 0
