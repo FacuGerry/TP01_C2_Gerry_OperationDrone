@@ -69,13 +69,20 @@ public class CameraController : MonoBehaviour
 
         transform.localEulerAngles += rotation;
 
-        if (transform.localEulerAngles.x > _rotationMaxVer)
+        float rotationX = transform.localEulerAngles.x;
+
+        if ((rotationX > _rotationMaxVer) && (rotationX < _rotationMinVer))
         {
-            transform.localEulerAngles = new Vector3(_rotationMaxVer, transform.localEulerAngles.y, 0);
-        }
-        else if (transform.localEulerAngles.x < _rotationMinVer)
-        {
-            transform.localEulerAngles = new Vector3(_rotationMinVer, transform.localEulerAngles.y, 0);
+            if ((rotationX - _rotationMaxVer) < (_rotationMinVer - rotationX))
+            {
+                rotationX = _rotationMaxVer;
+            }
+            else
+            {
+                rotationX = _rotationMinVer;
+            }
+
+            transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, 0);
         }
     }
 }
