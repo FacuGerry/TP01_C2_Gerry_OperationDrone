@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -13,67 +12,49 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _rotationMaxVer = 75;
 
     [Header("Camera Positions")]
-    [SerializeField] private Vector3 _cameraPosFirstPerson;
-    [SerializeField] private Vector3 _cameraPosThirdPerson;
-
-    [Header("Camera Rotations")]
-    [SerializeField] private Vector3 _cameraRotationFirstPerson;
-    [SerializeField] private Vector3 _cameraRotationThirdPerson;
+    [SerializeField] private Transform _cameraPos1stPerson;
+    [SerializeField] private Transform _cameraPos3rdPerson;
 
     [Header("Camera")]
     [SerializeField] private GameObject _camera;
 
     [Header("Camera Movement")]
-    [SerializeField] private float _maxTime;
-    private float _time = 0f;
-    private float _lerp;
+    [SerializeField] private float _time;
 
-    private IEnumerator _corroutineCameraMovement;
+    private bool _isChanging = false;
 
-    private void FixedUpdate()
+    private void Start()
     {
+        transform.localEulerAngles = Vector3.zero;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(_keys.changePOV))
+        {
+            _isChanging = !_isChanging;
+        }
+
         ChangePOV();
         Rotation();
     }
 
-    private IEnumerator MovingCamera()
+    private void ChangePOV()
     {
-        if (_camera.transform.position == _cameraPosFirstPerson)
+        if (_isChanging)
         {
-            while (_time < _maxTime)
+            if (_camera.transform != _cameraPos1stPerson)
             {
-                _time += Time.deltaTime;
-                _lerp = _time / _maxTime;
-                _camera.transform.position = Vector3.Lerp(_cameraPosFirstPerson, _cameraPosThirdPerson, _lerp);
-                yield return null;
+                _camera.transform.position = Vector3.Lerp(_camera.transform.position, _cameraPos1stPerson.position, _time * Time.deltaTime);
+                _camera.transform.localEulerAngles = Vector3.Lerp(_camera.transform.localEulerAngles, _cameraPos1stPerson.localEulerAngles, _time * Time.deltaTime);
             }
-            _camera.transform.localEulerAngles = _cameraRotationThirdPerson;
         }
         else
         {
-            while (_time < _maxTime)
+            if (_camera.transform != _cameraPos3rdPerson)
             {
-                _time += Time.deltaTime;
-                _lerp = _time / _maxTime;
-                _camera.transform.position = Vector3.Lerp(_cameraPosThirdPerson, _cameraPosFirstPerson, _lerp);
-                yield return null;
-            }
-            _camera.transform.localEulerAngles = _cameraRotationFirstPerson;
-        }
-        _time = 0f;
-        _corroutineCameraMovement = null;
-        yield return null;
-    }
-
-    private void ChangePOV()
-    {
-        if (Input.GetKeyUp(_keys.changePOV))
-        {
-            if (_corroutineCameraMovement != null) { }
-            else
-            {
-                _corroutineCameraMovement = MovingCamera();
-                StartCoroutine(_corroutineCameraMovement);
+                _camera.transform.position = Vector3.Lerp(_camera.transform.position, _cameraPos3rdPerson.position, _time * Time.deltaTime);
+                _camera.transform.localEulerAngles = Vector3.Lerp(_camera.transform.localEulerAngles, _cameraPos3rdPerson.localEulerAngles, _time * Time.deltaTime);
             }
         }
     }
@@ -84,19 +65,17 @@ public class CameraController : MonoBehaviour
 
         rotation.x *= _rotationSpeedVer;
         rotation.y *= _rotationSpeedHor;
-
-        if (-rotation.x <= _rotationMinVer)
-        {
-            rotation.x = -_rotationMinVer;
-        }
-
-        if (-rotation.x >= _rotationMaxVer)
-        {
-            rotation.x = -_rotationMaxVer;
-        }
-
-        rotation *= Time.fixedDeltaTime;
+        rotation *= Time.deltaTime;
 
         transform.localEulerAngles += rotation;
+
+        if (transform.localEulerAngles.x > _rotationMaxVer)
+        {
+            transform.localEulerAngles = new Vector3(_rotationMaxVer, transform.localEulerAngles.y, 0);
+        }
+        else if (transform.localEulerAngles.x < _rotationMinVer)
+        {
+            transform.localEulerAngles = new Vector3(_rotationMinVer, transform.localEulerAngles.y, 0);
+        }
     }
 }
