@@ -1,7 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiPlayerDie : MonoBehaviour
 {
+    [SerializeField] private Button _btnReplay;
+    [SerializeField] private Button _btnMainMenu;
+    [SerializeField] private string _sceneReplay;
+    [SerializeField] private string _sceneMainMenu;
+
     private CanvasGroup _canvasGroup;
 
     private void Awake()
@@ -14,6 +20,9 @@ public class UiPlayerDie : MonoBehaviour
         _canvasGroup.alpha = 0f;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
+
+        //_btnReplay.onClick.AddListener();
+        //_btnMainMenu.onClick.AddListener();
     }
 
     private void OnEnable()
@@ -25,6 +34,7 @@ public class UiPlayerDie : MonoBehaviour
     {
         HealthSystem.OnPlayerDie -= OnPlayerDie_ShowText;
     }
+
 
     private void OnPlayerDie_ShowText()
     {
