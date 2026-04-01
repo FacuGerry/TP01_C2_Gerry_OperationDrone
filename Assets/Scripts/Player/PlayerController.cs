@@ -8,18 +8,27 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float _movementSpeedHor = 10;
     [SerializeField] private float _movementSpeedVer = 10;
+    [SerializeField] private float _maxSpeed;
 
-    private Rigidbody _rb;
+    public float readableMaxSpeed { get; private set; }
+
+    public Rigidbody _rb { get; private set; }
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        readableMaxSpeed = _maxSpeed;
+    }
+
     private void FixedUpdate()
     {
         MovementHor();
         MovementVer();
+        CheckSpeed();
     }
 
     private void MovementHor()
@@ -55,6 +64,39 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(_keys.down))
         {
             _rb.AddForce(Vector3.down * _movementSpeedVer, ForceMode.Force);
+        }
+    }
+
+    private void CheckSpeed()
+    {
+        if (_rb.linearVelocity.x >= readableMaxSpeed)
+        {
+            _rb.linearVelocity = new Vector3(readableMaxSpeed, _rb.linearVelocity.y, _rb.linearVelocity.z);
+        }
+
+        if (_rb.linearVelocity.y >= readableMaxSpeed)
+        {
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, readableMaxSpeed, _rb.linearVelocity.z);
+        }
+
+        if (_rb.linearVelocity.z >= readableMaxSpeed)
+        {
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, readableMaxSpeed);
+        }
+
+        if (_rb.linearVelocity.x <= -readableMaxSpeed)
+        {
+            _rb.linearVelocity = new Vector3(-readableMaxSpeed, _rb.linearVelocity.y, _rb.linearVelocity.z);
+        }
+
+        if (_rb.linearVelocity.y <= -readableMaxSpeed)
+        {
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, -readableMaxSpeed, _rb.linearVelocity.z);
+        }
+
+        if (_rb.linearVelocity.z <= -readableMaxSpeed)
+        {
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, -readableMaxSpeed);
         }
     }
 }

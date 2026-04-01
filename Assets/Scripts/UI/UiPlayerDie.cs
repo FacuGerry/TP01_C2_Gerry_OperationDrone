@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UiPlayerDie : MonoBehaviour
@@ -21,8 +22,8 @@ public class UiPlayerDie : MonoBehaviour
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
 
-        //_btnReplay.onClick.AddListener();
-        //_btnMainMenu.onClick.AddListener();
+        _btnReplay.onClick.AddListener(ReplayPressed);
+        _btnMainMenu.onClick.AddListener(MainMenuPressed);
     }
 
     private void OnEnable()
@@ -35,11 +36,26 @@ public class UiPlayerDie : MonoBehaviour
         HealthSystem.OnPlayerDie -= OnPlayerDie_ShowText;
     }
 
+    private void OnDestroy()
+    {
+        _btnReplay.onClick.RemoveAllListeners();
+        _btnMainMenu.onClick.RemoveAllListeners();
+    }
 
     private void OnPlayerDie_ShowText()
     {
         _canvasGroup.alpha = 1f;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
+    }
+
+    private void ReplayPressed()
+    {
+        SceneManager.LoadScene(_sceneReplay);
+    }
+
+    private void MainMenuPressed()
+    {
+        SceneManager.LoadScene(_sceneMainMenu);
     }
 }

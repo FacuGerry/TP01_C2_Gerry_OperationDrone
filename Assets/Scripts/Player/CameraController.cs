@@ -31,9 +31,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyUp(_keys.changePOV))
-        {
             _isChanging = !_isChanging;
-        }
 
         ChangePOV();
         Rotation();
@@ -74,13 +72,9 @@ public class CameraController : MonoBehaviour
         if ((rotationX > _rotationMaxVer) && (rotationX < _rotationMinVer))
         {
             if ((rotationX - _rotationMaxVer) < (_rotationMinVer - rotationX))
-            {
                 rotationX = _rotationMaxVer;
-            }
             else
-            {
                 rotationX = _rotationMinVer;
-            }
 
             transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, 0);
         }
