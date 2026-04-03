@@ -7,7 +7,6 @@ public class HealthSystem : MonoBehaviour
     public static event Action OnPlayerDie;
 
     [SerializeField] private int _maxHealth;
-    private int _damage;
 
     private int _health;
 
@@ -29,9 +28,8 @@ public class HealthSystem : MonoBehaviour
 
     private void OnPlayerCrashed_ReduceHealth(int damage)
     {
-        _damage = damage;
-        _health -= _damage;
-        Debug.Log("Player damaged by " + _damage + " points");
+        _health -= damage;
+        Debug.Log("Player damaged by " + damage + " points");
         if (_health <= 0)
         {
             _health = 0;

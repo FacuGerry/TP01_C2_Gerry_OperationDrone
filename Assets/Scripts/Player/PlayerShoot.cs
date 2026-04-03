@@ -5,6 +5,7 @@ using UnityEngine.TextCore.Text;
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private KeyBindingsSO _keys;
+    [SerializeField] private Transform _shootingPos;
 
     private bool _isShooting = false;
     private bool _startedShooting = false;
@@ -48,18 +49,14 @@ public class PlayerShoot : MonoBehaviour
     {
         while (_isShooting)
         {
-            RaycastHit2D ray = Physics2D.Raycast(transform.position, transform.forward);
+            RaycastHit2D ray = Physics2D.Raycast(_shootingPos.position, transform.forward);
 
             if (ray.collider != null && ray.collider.CompareTag("NPC"))
-            {
                 Debug.Log("Hit a NPC");
-            }
             else
-            {
                 Debug.Log("Skill issue");
-            }
 
-                yield return null;
+            yield return null;
         }
     }
 }
