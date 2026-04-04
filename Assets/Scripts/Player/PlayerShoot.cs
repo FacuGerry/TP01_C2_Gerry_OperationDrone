@@ -7,6 +7,11 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private KeyBindingsSO _keys;
     [SerializeField] private Transform _shootingPos;
 
+    [Header("Second bullet stats")]
+    [SerializeField] private float _bulletSpeed;
+    [SerializeField] private float _bulletDistance;
+    [SerializeField] private Rigidbody _bulletRb;
+
     private bool _isShooting = false;
     private bool _startedShooting = false;
 
@@ -16,6 +21,9 @@ public class PlayerShoot : MonoBehaviour
     {
         if (Input.GetKey(_keys.shoot))
             _isShooting = true;
+
+        if (Input.GetKey(_keys.secondShoot))
+            SecondShoot();
 
         if (Input.GetKeyUp(_keys.shoot))
         {
@@ -58,5 +66,13 @@ public class PlayerShoot : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void SecondShoot()
+    {
+        Vector3 targetPos = transform.forward * _bulletDistance;
+        Vector3 bulletDirection = (targetPos - gameObject.transform.position).normalized;
+        _bulletRb.linearVelocity = bulletDirection * _bulletSpeed;
+        Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ")");
     }
 }

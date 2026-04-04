@@ -2435,6 +2435,7 @@ Transform:
   - {fileID: 1421050501}
   - {fileID: 330585546}
   - {fileID: 2122085410}
+  - {fileID: 1560080272}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &429210793
@@ -2561,6 +2562,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShoot
   _keys: {fileID: 11400000, guid: 644afaf9758c58047b330a2ddadddb07, type: 2}
   _shootingPos: {fileID: 2122085410}
+  _bulletSpeed: 0
+  _bulletDistance: 0
+  _bulletRb: {fileID: 0}
 --- !u!4 &481401405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7303116509305054165, guid: dfec8d9b723b08e4ab4463a1b8f9cd7d, type: 3}
@@ -6497,8 +6501,23 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 1cd2292dca7ecd549a673a31d21d32c5, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6f421c948272d694ab644abe1cb32150, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 1cd2292dca7ecd549a673a31d21d32c5, type: 3}
       propertyPath: m_AnimatePhysics
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 1cd2292dca7ecd549a673a31d21d32c5, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+        'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
+        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
+        'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Firing Rifle'\n\tFrom
+        animation clip 'Rifle Walk'"
       objectReference: {fileID: 0}
     - target: {fileID: 6240733294840144465, guid: 1cd2292dca7ecd549a673a31d21d32c5, type: 3}
       propertyPath: m_Layer
@@ -6544,6 +6563,11 @@ PrefabInstance:
 --- !u!4 &1155116800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1cd2292dca7ecd549a673a31d21d32c5, type: 3}
+  m_PrefabInstance: {fileID: 1155116799}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1155116801 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 1cd2292dca7ecd549a673a31d21d32c5, type: 3}
   m_PrefabInstance: {fileID: 1155116799}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1157870503 stripped
@@ -8319,6 +8343,7 @@ MonoBehaviour:
   _chancesForEnemy: 0.7
   _shootDistance: 5
   _player: {fileID: 429210788}
+  _anim: {fileID: 1155116801}
 --- !u!54 &1452933646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8633,6 +8658,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4515292266870454, guid: 5eb69a259abef0b44b353ae0837d5764, type: 3}
   m_PrefabInstance: {fileID: 5438472}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1560080271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1560080272}
+  m_Layer: 7
+  m_Name: SecondBullets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1560080272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560080271}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 429210792}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1565125516
 PrefabInstance:
   m_ObjectHideFlags: 0

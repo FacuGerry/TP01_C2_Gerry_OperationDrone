@@ -19,4 +19,5 @@ public class KeyBindingsSO : ScriptableObject
     public KeyCode pause3;
     [Header("Shoot")]
     public KeyCode shoot;
+    public KeyCode secondShoot;
 }

@@ -9,6 +9,8 @@ public abstract partial class EnemyStates
     protected NpcController _patrol;
     protected NavMeshAgent _agent;
 
+    protected static readonly int _state = Animator.StringToHash("State");
+
     public virtual void Initialize(Animator animator, Rigidbody rigidbody, NpcController npcPatrol, NavMeshAgent agent)
     {
         _anim = animator;
@@ -22,10 +24,7 @@ public abstract partial class EnemyStates
         Debug.Log("Enter to " + state);
     }
 
-    public virtual void OnUpdate()
-    {
-
-    }
+    public virtual void OnUpdate() { }
 
     public virtual void OnExit()
     {

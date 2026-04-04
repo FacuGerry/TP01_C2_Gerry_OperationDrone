@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,14 +9,16 @@ public class NpcController : MonoBehaviour
     [SerializeField] private float _chancesForEnemy;
     [SerializeField] private float _shootDistance;
     [SerializeField] private GameObject _player;
+    [SerializeField] private Animator _anim;
 
     private List<EnemyStates> _states = new List<EnemyStates>();
     private EnemyStates _currentState;
-    private Animator _anim;
     private Rigidbody _rb;
     private NavMeshAgent _agent;
 
     private bool _isEnemy = false;
+
+    private IEnumerator _corroutineShoot;
 
     private void Awake()
     {
@@ -47,12 +50,36 @@ public class NpcController : MonoBehaviour
         if (_currentState != null)
             _currentState.OnUpdate();
 
-        CheckForPlayer();
+        if (_isEnemy)
+            CheckForPlayer();
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
+    public void EnableShooting(bool isShooting)
+    {
+        if (isShooting)
+        {
+            if (_corroutineShoot != null) { }
+            else
+            {
+                _corroutineShoot = Shooting();
+                StartCoroutine(_corroutineShoot);
+            }
+        }
+        else
+        {
+            if (_corroutineShoot != null)
+                StopCoroutine(_corroutineShoot);
+        }
     }
 
     private void CheckForPlayer()
     {
-        if (Vector3.Distance(_player.transform.position, transform.position) < _shootDistance)
+        if (Vector3.Distance(_player.transform.position, transform.position) <= _shootDistance)
             SwitchState(FindState(StateType.Shoot));
         else
             SwitchState(FindState(StateType.Walk));
@@ -75,5 +102,11 @@ public class NpcController : MonoBehaviour
                 return state;
 
         return null;
+    }
+
+    private IEnumerator Shooting()
+    {
+        Debug.Log("Shooting");
+        yield return null;
     }
 }

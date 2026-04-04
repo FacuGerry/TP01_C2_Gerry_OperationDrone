@@ -15,6 +15,7 @@ public class StateWalk : EnemyStates
     {
         base.OnEnter();
         _agent.SetDestination(_patrol.positions[_index]);
+        _anim.SetInteger(_state, (int)state);
     }
 
     public override void OnUpdate()
