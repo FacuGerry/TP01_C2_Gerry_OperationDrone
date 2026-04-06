@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,14 @@ public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private KeyBindingsSO _keys;
     [SerializeField] private Transform _shootingPos;
+    [SerializeField] private float _normalBulletDistance;
 
     [Header("Second bullet stats")]
     [SerializeField] private List<GameObject> _bullets = new List<GameObject>();
     [SerializeField] private float _bulletSpeed;
     [SerializeField] private float _bulletHeight;
     [SerializeField] private float _bulletDistance;
+    [SerializeField] private int _bulletDamage;
     [SerializeField] private GameObject _cheatLine;
 
     private List<Rigidbody> _bulletRb = new List<Rigidbody>();
@@ -67,15 +70,11 @@ public class PlayerShoot : MonoBehaviour
     {
         while (_isShooting)
         {
-            RaycastHit2D ray = Physics2D.Raycast(_shootingPos.position, transform.forward);
+            RaycastHit ray;
 
-            if (ray.collider != null && ray.collider.TryGetComponent(out NpcHealthSystem enemy))
-            {
-
-                Debug.Log("Hit a NPC");
-            }
-            else
-                Debug.Log("Skill issue");
+            if (Physics.Raycast(_shootingPos.transform.position, _shootingPos.transform.forward, out ray, _normalBulletDistance))
+                if (ray.collider != null && ray.collider.TryGetComponent(out NpcHealthSystem npc))
+                    npc.OnNormalShot_TakeDamage(_bulletDamage);
 
             yield return null;
         }
@@ -91,9 +90,9 @@ public class PlayerShoot : MonoBehaviour
                 _bullets[i].transform.position = _shootingPos.position;
                 _bullets[i].SetActive(true);
 
-                Vector3 targetPos = transform.forward * _bulletDistance;
-                targetPos.y += _bulletHeight;
-                Vector3 bulletDirection = (targetPos - _bullets[i].transform.position).normalized;
+                float height = _shootingPos.transform.forward.y + _bulletHeight;
+                Vector3 targetPos = new Vector3(_shootingPos.transform.forward.x, height, _shootingPos.transform.forward.z);
+                Vector3 bulletDirection = ((targetPos - _bullets[i].transform.position) * _bulletDistance).normalized;
 
                 _bulletRb[i].linearVelocity = bulletDirection * _bulletSpeed;
                 Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ")");

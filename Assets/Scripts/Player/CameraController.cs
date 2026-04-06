@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 
     private bool _isChanging = false;
 
-    private void Start()
+    private void Awake()
     {
         transform.localEulerAngles = Vector3.zero;
     }

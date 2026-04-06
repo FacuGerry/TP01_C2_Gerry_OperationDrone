@@ -3,12 +3,10 @@ using UnityEngine;
 
 public class NpcHealthSystem : MonoBehaviour
 {
-    public event Action<bool> OnNpcDie;
+    public static event Action<bool> OnNpcDie;
 
     [SerializeField] private NpcDataSO _data;
-    [SerializeField] private int _damageNormal;
-    [SerializeField] private int _damageBullet;
-    //[SerializeField] private PlayerShoot _player;
+    [SerializeField] private PlayerShoot _player;
 
     private NpcController _controller;
     private int _life;
@@ -23,33 +21,35 @@ public class NpcHealthSystem : MonoBehaviour
         _life = _data.life;
     }
 
-    private void OnEnable()
-    {
-        
-    }
-
-    private void OnDisable()
-    {
-        
-    }
-
     private void TakeDamage(int damage)
     {
         _life -= damage;
         if (_life <= 0)
         {
             _life = 0;
-            OnNpcDie?.Invoke(_controller._isEnemy);
+            NpcDie();
         }
     }
 
-    private void OnNormalShot_TakeDamage()
+    public void OnNormalShot_TakeDamage(int damage)
     {
-        TakeDamage(_damageNormal);
+        TakeDamage(damage);
     }
 
-    private void OnBulletShot_TakeDamage()
+    public void OnBulletShot_TakeDamage(int damage)
     {
-        TakeDamage(_damageBullet);
+        TakeDamage(damage);
+    }
+
+    private void NpcDie()
+    {
+        if (_controller.isEnemy)
+            Debug.Log("Killed an enemy");
+        else
+            Debug.Log("Killed a citizen");
+
+        OnNpcDie?.Invoke(_controller.isEnemy);
+
+        gameObject.SetActive(false);
     }
 }

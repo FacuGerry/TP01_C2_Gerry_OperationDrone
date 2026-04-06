@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class NpcDataSO : ScriptableObject
 {
+    public int level;
+
+    [Header("Stats")]
     public int life;
     public float speed;
-    public int distanceToShoot;
-    public int chanceToBeEnemy;
+
+    [Header("Enemy")]
+    public float chanceToBeEnemy;
+
+    [Header("Attacking")]
+    public float distanceToShoot;
+    public float shootingSpeed;
+    public int shootingDamage;
 }

@@ -20,7 +20,9 @@ public class NpcController : MonoBehaviour
     private Rigidbody _rb;
     private NavMeshAgent _agent;
 
-    public bool _isEnemy { get; private set; }
+    public bool isEnemy { get; private set; }
+
+    private bool _isShooting;
 
     private IEnumerator _corroutineShoot;
 
@@ -46,9 +48,9 @@ public class NpcController : MonoBehaviour
 
         float rand = Random.value;
         if (rand >= _data.chanceToBeEnemy)
-            _isEnemy = true;
+            isEnemy = true;
         else
-            _isEnemy = false;
+            isEnemy = false;
 
         SwitchState(FindState(StateType.Walk));
 
@@ -60,7 +62,7 @@ public class NpcController : MonoBehaviour
         if (currentState != null)
             currentState.OnUpdate();
 
-        if (_isEnemy)
+        if (isEnemy)
             CheckForPlayer();
 
         MoveGun();
@@ -73,7 +75,11 @@ public class NpcController : MonoBehaviour
 
     private IEnumerator Shooting()
     {
-        Debug.Log("Shooting");
+        while (_isShooting)
+        {
+
+            yield return null;
+        }
         yield return null;
     }
 
@@ -84,12 +90,16 @@ public class NpcController : MonoBehaviour
             if (_corroutineShoot != null) { }
             else
             {
+                _isShooting = true;
+
                 _corroutineShoot = Shooting();
                 StartCoroutine(_corroutineShoot);
             }
         }
         else
         {
+            _isShooting = false;
+
             if (_corroutineShoot != null)
                 StopCoroutine(_corroutineShoot);
         }
