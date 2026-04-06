@@ -6,17 +6,21 @@ using UnityEngine.AI;
 public class NpcController : MonoBehaviour
 {
     public List<Vector3> positions = new List<Vector3>();
-    [SerializeField] private float _chancesForEnemy;
-    [SerializeField] private float _shootDistance;
     [SerializeField] private GameObject _player;
     [SerializeField] private Animator _anim;
+    [SerializeField] private NpcDataSO _data;
+
+    [Header("Gun")]
+    [SerializeField] private GameObject _weapon;
+    [SerializeField] private Transform _walkPos;
+    [SerializeField] private Transform _shootPos;
 
     private List<EnemyStates> _states = new List<EnemyStates>();
-    private EnemyStates _currentState;
+    private EnemyStates currentState;
     private Rigidbody _rb;
     private NavMeshAgent _agent;
 
-    private bool _isEnemy = false;
+    public bool _isEnemy { get; private set; }
 
     private IEnumerator _corroutineShoot;
 
@@ -32,31 +36,45 @@ public class NpcController : MonoBehaviour
         foreach (EnemyStates state in _states)
             state.Initialize(_anim, _rb, this, _agent);
 
-        _currentState = FindState(StateType.Idle);
-        _currentState.OnEnter();
+        currentState = FindState(StateType.Idle);
+        currentState.OnEnter();
     }
 
     private void Start()
     {
+        transform.position = new Vector3(positions[0].x, transform.position.y, positions[0].z);
+
         float rand = Random.value;
-        if (rand >= _chancesForEnemy)
+        if (rand >= _data.chanceToBeEnemy)
             _isEnemy = true;
+        else
+            _isEnemy = false;
 
         SwitchState(FindState(StateType.Walk));
+
+        _agent.speed = _data.speed;
     }
 
     private void Update()
     {
-        if (_currentState != null)
-            _currentState.OnUpdate();
+        if (currentState != null)
+            currentState.OnUpdate();
 
         if (_isEnemy)
             CheckForPlayer();
+
+        MoveGun();
     }
 
     private void OnDestroy()
     {
         StopAllCoroutines();
+    }
+
+    private IEnumerator Shooting()
+    {
+        Debug.Log("Shooting");
+        yield return null;
     }
 
     public void EnableShooting(bool isShooting)
@@ -79,7 +97,7 @@ public class NpcController : MonoBehaviour
 
     private void CheckForPlayer()
     {
-        if (Vector3.Distance(_player.transform.position, transform.position) <= _shootDistance)
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _data.distanceToShoot)
             SwitchState(FindState(StateType.Shoot));
         else
             SwitchState(FindState(StateType.Walk));
@@ -87,12 +105,12 @@ public class NpcController : MonoBehaviour
 
     private void SwitchState(EnemyStates newState)
     {
-        if (_currentState == newState)
+        if (currentState == newState)
             return;
 
-        _currentState.OnExit();
-        _currentState = newState;
-        _currentState.OnEnter();
+        currentState.OnExit();
+        currentState = newState;
+        currentState.OnEnter();
     }
 
     private EnemyStates FindState(StateType stateToFind)
@@ -104,9 +122,17 @@ public class NpcController : MonoBehaviour
         return null;
     }
 
-    private IEnumerator Shooting()
+    private void MoveGun()
     {
-        Debug.Log("Shooting");
-        yield return null;
+        if (currentState == FindState(StateType.Walk))
+        {
+            _weapon.transform.position = _walkPos.position;
+            _weapon.transform.localEulerAngles = _walkPos.localEulerAngles;
+        }
+        if (currentState == FindState(StateType.Shoot))
+        {
+            _weapon.transform.position = _shootPos.position;
+            _weapon.transform.localEulerAngles = _shootPos.localEulerAngles;
+        }
     }
 }

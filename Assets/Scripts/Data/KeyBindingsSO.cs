@@ -20,4 +20,5 @@ public class KeyBindingsSO : ScriptableObject
     [Header("Shoot")]
     public KeyCode shoot;
     public KeyCode secondShoot;
+    public KeyCode showCheat;
 }
