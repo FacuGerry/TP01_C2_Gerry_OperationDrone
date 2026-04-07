@@ -85,12 +85,13 @@ public class PlayerShoot : MonoBehaviour
         while (_isShooting)
         {
             RaycastHit ray;
-
-            if (Physics.Raycast(_shootingPos.transform.position, _shootingPos.transform.forward, out ray, _normalBulletDistance))
+            if (Physics.Raycast(_shootingPos.transform.position, transform.forward, out ray, _normalBulletDistance))
                 if (ray.collider != null && ray.collider.TryGetComponent(out NpcHealthSystem npc))
+                {
                     npc.OnNormalShot_TakeDamage(_bulletDamage);
-
-            yield return null;
+                    Debug.Log("Hit an NPC");
+                }
+            yield return new WaitForSeconds(0.3f);
         }
     }
 

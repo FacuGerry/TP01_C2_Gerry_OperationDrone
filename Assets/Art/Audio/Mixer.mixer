@@ -74,7 +74,7 @@ AudioMixerController:
   - guid: e4c22510f02102342a587b9e7e4b5536
     name: MusicVol
   - guid: af19d773951dbbd46a8ba614d77dbabd
-    name: SfxVol
+    name: SFXVol
   - guid: 0269d140e56d37c44a204978d4ce5d03
     name: UiVol
   m_AudioMixerGroupViews:

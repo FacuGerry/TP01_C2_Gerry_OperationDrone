@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public class NpcController : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class NpcController : MonoBehaviour
     [SerializeField] private Transform _shootPos;
 
     [Header("Bullets")]
-    [SerializeField] private List<GameObject> _bullets = new List<GameObject>();
     [SerializeField] private Transform _bulletShootPos;
 
     private List<EnemyStates> _states = new List<EnemyStates>();
@@ -49,6 +49,7 @@ public class NpcController : MonoBehaviour
 
         currentState = FindState(StateType.Idle);
         currentState.OnEnter();
+
     }
 
     private void Start()
@@ -65,9 +66,6 @@ public class NpcController : MonoBehaviour
 
         _agent.speed = _data.speed;
         _shootingSpeed = _data.shootingSpeed - (_data.level / 10);
-
-        foreach (GameObject bullet in _bullets)
-            _bulletRb.Add(bullet.GetComponent<Rigidbody>());
     }
 
     private void OnEnable()
@@ -103,26 +101,23 @@ public class NpcController : MonoBehaviour
     {
         while (_isShooting)
         {
-            for (int i = 0; i < _bullets.Count; i++)
+            GameObject bullet = Bullets.instance.GetPooledObject();
+            Rigidbody rb = Bullets.instance.GetRigidbody(bullet);
+            if (bullet != null)
             {
-                if (!_bullets[i].activeInHierarchy)
-                {
-                    _bulletRb[i].linearVelocity = Vector3.zero;
-                    _bulletRb[i].angularVelocity = Vector3.zero;
-                    _bullets[i].transform.position = _bulletShootPos.position;
-                    _bullets[i].SetActive(true);
+                bullet.transform.position = _bulletShootPos.position;
+                bullet.transform.rotation = _bulletShootPos.rotation;
+                bullet.SetActive(true);
 
-                    Vector3 playerPos = _player.transform.position;
-                    playerPos.y = _bullets[i].transform.position.y;
+                Vector3 playerPos = _player.transform.position;
+                playerPos.y = bullet.transform.position.y;
 
-                    Vector3 bulletDirection = (playerPos - _bullets[i].transform.position).normalized;
+                Vector3 bulletDirection = (playerPos - bullet.transform.position).normalized;
 
-                    _bulletRb[i].linearVelocity = bulletDirection * _data.shootingSpeed;
+                rb.linearVelocity = bulletDirection * _data.shootingSpeed;
 
-                    Debug.Log("Enemy shot a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
-                    Debug.DrawLine(_bullets[i].transform.position, _player.transform.position, Color.red, 2f);
-                    break;
-                }
+                Debug.Log("Enemy shot a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
+                Debug.DrawLine(bullet.transform.position, _player.transform.position, Color.red, 2f);
             }
             yield return new WaitForSeconds(_shootingSpeed);
         }
@@ -148,6 +143,8 @@ public class NpcController : MonoBehaviour
 
             if (_corroutineShoot != null)
                 StopCoroutine(_corroutineShoot);
+
+            _corroutineShoot = null;
         }
     }
 
@@ -190,12 +187,6 @@ public class NpcController : MonoBehaviour
             _weapon.transform.position = _shootPos.position;
             _weapon.transform.localEulerAngles = _shootPos.localEulerAngles;
         }
-    }
-
-    public void DeactivateBullets()
-    {
-        foreach (GameObject bullet in _bullets)
-            bullet.SetActive(false);
     }
 
     private void OnPause_PauseGame(bool isPaused)

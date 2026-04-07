@@ -32,7 +32,6 @@ public class StateShoot : EnemyStates
     {
         base.OnExit();
         _patrol.EnableShooting(false);
-        _patrol.DeactivateBullets();
         _agent.isStopped = false;
     }
 }
