@@ -5,7 +5,7 @@ public class NpcHealthSystem : MonoBehaviour
 {
     public static event Action<bool> OnNpcDie;
 
-    [SerializeField] private NpcDataSO _data;
+    [SerializeField] private StatsDataSO _data;
     [SerializeField] private PlayerShoot _player;
 
     private NpcController _controller;

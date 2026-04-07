@@ -21,6 +21,7 @@ public class PlayerShoot : MonoBehaviour
     private bool _isShooting = false;
     private bool _startedShooting = false;
 
+    private bool _isPaused = false;
     private IEnumerator _corroutineShoot;
 
     private void Awake()
@@ -29,36 +30,49 @@ public class PlayerShoot : MonoBehaviour
             _bulletRb.Add(bullet.GetComponent<Rigidbody>());
     }
 
+    private void OnEnable()
+    {
+        PauseGame.OnPause += OnPause_PauseGame;
+    }
+
     private void Update()
     {
-        if (Input.GetKey(_keys.shoot))
-            _isShooting = true;
-
-        if (Input.GetKeyDown(_keys.secondShoot))
-            SecondShoot();
-
-        if (Input.GetKeyDown(_keys.showCheat))
-            ShowCheat();
-
-        if (Input.GetKeyUp(_keys.shoot))
+        if (!_isPaused)
         {
-            _isShooting = false;
-            _startedShooting = false;
+            if (Input.GetKey(_keys.shoot))
+                _isShooting = true;
+
+            if (Input.GetKeyDown(_keys.secondShoot))
+                SecondShoot();
+
+            if (Input.GetKeyDown(_keys.showCheat))
+                ShowCheat();
+
+            if (Input.GetKeyUp(_keys.shoot))
+            {
+                _isShooting = false;
+                _startedShooting = false;
+            }
+
+            if (_isShooting && !_startedShooting)
+            {
+                _startedShooting = true;
+                if (_corroutineShoot != null)
+                    StopCoroutine(_corroutineShoot);
+
+                _corroutineShoot = Shooting();
+                StartCoroutine(_corroutineShoot);
+            }
+
+            if (!_isShooting)
+                if (_corroutineShoot != null)
+                    StopCoroutine(_corroutineShoot);
         }
+    }
 
-        if (_isShooting && !_startedShooting)
-        {
-            _startedShooting = true;
-            if (_corroutineShoot != null)
-                StopCoroutine(_corroutineShoot);
-
-            _corroutineShoot = Shooting();
-            StartCoroutine(_corroutineShoot);
-        }
-
-        if (!_isShooting)
-            if (_corroutineShoot != null)
-                StopCoroutine(_corroutineShoot);
+    private void OnDisable()
+    {
+        PauseGame.OnPause -= OnPause_PauseGame;
     }
 
     private void OnDestroy()
@@ -90,12 +104,12 @@ public class PlayerShoot : MonoBehaviour
                 _bullets[i].transform.position = _shootingPos.position;
                 _bullets[i].SetActive(true);
 
-                float height = _shootingPos.transform.forward.y + _bulletHeight;
-                Vector3 targetPos = new Vector3(_shootingPos.transform.forward.x, height, _shootingPos.transform.forward.z);
-                Vector3 bulletDirection = ((targetPos - _bullets[i].transform.position) * _bulletDistance).normalized;
+                Vector3 targetPos = transform.position + transform.forward * _bulletDistance;
+                targetPos.y += _bulletHeight;
+                Vector3 bulletDirection = (targetPos - _bullets[i].transform.position).normalized;
 
                 _bulletRb[i].linearVelocity = bulletDirection * _bulletSpeed;
-                Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ")");
+                Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
 
                 isSearching = false;
             }
@@ -105,5 +119,10 @@ public class PlayerShoot : MonoBehaviour
     private void ShowCheat()
     {
         _cheatLine.SetActive(!_cheatLine.activeInHierarchy);
+    }
+
+    private void OnPause_PauseGame(bool isPaused)
+    {
+        _isPaused = isPaused;
     }
 }

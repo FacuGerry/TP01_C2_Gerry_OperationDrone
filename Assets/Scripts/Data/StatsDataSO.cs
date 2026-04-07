@@ -2,7 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "NpcData", menuName = "Npc/NpcData")]
 
-public class NpcDataSO : ScriptableObject
+public class StatsDataSO : ScriptableObject
 {
     public int level;
 

@@ -2,12 +2,21 @@ using UnityEngine;
 
 public class BuleltsCollision : MonoBehaviour
 {
-    [SerializeField] private int _damageBullet;
+    [SerializeField] private StatsDataSO _data;
+    [SerializeField] private bool _isPlayerBullet;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.TryGetComponent(out NpcHealthSystem npc))
-            npc.OnBulletShot_TakeDamage(_damageBullet);
+        if (_isPlayerBullet)
+        {
+            if (collision.gameObject.TryGetComponent(out NpcHealthSystem npc))
+                npc.OnBulletShot_TakeDamage(_data.shootingDamage);
+        }
+        else
+        {
+            if (collision.gameObject.TryGetComponent(out HealthSystem player))
+                player.TakeDamage(_data.shootingDamage * ((_data.level / 10) + 1));
+        }
 
         gameObject.SetActive(false);
     }

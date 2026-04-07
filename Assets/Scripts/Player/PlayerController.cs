@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody _rb { get; private set; }
 
+    private bool _isAlive;
+    private bool _isPaused = false;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -22,13 +25,29 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         readableMaxSpeed = _maxSpeed;
+        _isAlive = true;
+    }
+
+    private void OnEnable()
+    {
+        HealthSystem.OnPlayerDie += OnPlayerDie_StopMovement;
+        PauseGame.OnPause += OnPause_PauseGame;
+    }
+
+    private void OnDisable()
+    {
+        HealthSystem.OnPlayerDie -= OnPlayerDie_StopMovement;
+        PauseGame.OnPause -= OnPause_PauseGame;
     }
 
     private void FixedUpdate()
     {
-        MovementHor();
-        MovementVer();
-        CheckSpeed();
+        if (_isAlive && !_isPaused)
+        {
+            MovementHor();
+            MovementVer();
+            CheckSpeed();
+        }
     }
 
     private void MovementHor()
@@ -78,5 +97,15 @@ public class PlayerController : MonoBehaviour
 
         if (_rb.linearVelocity.z <= -readableMaxSpeed)
             _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, -readableMaxSpeed);
+    }
+
+    private void OnPlayerDie_StopMovement()
+    {
+        _isAlive = false;
+    }
+
+    private void OnPause_PauseGame(bool isPaused)
+    {
+        _isPaused = isPaused;
     }
 }

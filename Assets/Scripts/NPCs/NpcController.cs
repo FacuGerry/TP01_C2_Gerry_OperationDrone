@@ -8,23 +8,32 @@ public class NpcController : MonoBehaviour
     public List<Vector3> positions = new List<Vector3>();
     [SerializeField] private GameObject _player;
     [SerializeField] private Animator _anim;
-    [SerializeField] private NpcDataSO _data;
+    [SerializeField] private StatsDataSO _data;
 
     [Header("Gun")]
     [SerializeField] private GameObject _weapon;
     [SerializeField] private Transform _walkPos;
     [SerializeField] private Transform _shootPos;
 
+    [Header("Bullets")]
+    [SerializeField] private List<GameObject> _bullets = new List<GameObject>();
+    [SerializeField] private Transform _bulletShootPos;
+
     private List<EnemyStates> _states = new List<EnemyStates>();
     private EnemyStates currentState;
     private Rigidbody _rb;
     private NavMeshAgent _agent;
 
+    private List<Rigidbody> _bulletRb = new List<Rigidbody>();
+
     public bool isEnemy { get; private set; }
 
     private bool _isShooting;
 
+    private float _shootingSpeed;
+
     private IEnumerator _corroutineShoot;
+    private bool _isPaused = false;
 
     private void Awake()
     {
@@ -36,7 +45,7 @@ public class NpcController : MonoBehaviour
         _states.Add(new StateShoot());
 
         foreach (EnemyStates state in _states)
-            state.Initialize(_anim, _rb, this, _agent);
+            state.Initialize(_anim, _rb, this, _agent, _player);
 
         currentState = FindState(StateType.Idle);
         currentState.OnEnter();
@@ -55,17 +64,34 @@ public class NpcController : MonoBehaviour
         SwitchState(FindState(StateType.Walk));
 
         _agent.speed = _data.speed;
+        _shootingSpeed = _data.shootingSpeed - (_data.level / 10);
+
+        foreach (GameObject bullet in _bullets)
+            _bulletRb.Add(bullet.GetComponent<Rigidbody>());
+    }
+
+    private void OnEnable()
+    {
+        PauseGame.OnPause += OnPause_PauseGame;
     }
 
     private void Update()
     {
-        if (currentState != null)
-            currentState.OnUpdate();
+        if (!_isPaused)
+        {
+            if (currentState != null)
+                currentState.OnUpdate();
 
-        if (isEnemy)
-            CheckForPlayer();
+            if (isEnemy)
+                CheckForPlayer();
 
-        MoveGun();
+            MoveGun();
+        }
+    }
+
+    private void OnDisable()
+    {
+        PauseGame.OnPause -= OnPause_PauseGame;
     }
 
     private void OnDestroy()
@@ -77,8 +103,28 @@ public class NpcController : MonoBehaviour
     {
         while (_isShooting)
         {
+            for (int i = 0; i < _bullets.Count; i++)
+            {
+                if (!_bullets[i].activeInHierarchy)
+                {
+                    _bulletRb[i].linearVelocity = Vector3.zero;
+                    _bulletRb[i].angularVelocity = Vector3.zero;
+                    _bullets[i].transform.position = _bulletShootPos.position;
+                    _bullets[i].SetActive(true);
 
-            yield return null;
+                    Vector3 playerPos = _player.transform.position;
+                    playerPos.y = _bullets[i].transform.position.y;
+
+                    Vector3 bulletDirection = (playerPos - _bullets[i].transform.position).normalized;
+
+                    _bulletRb[i].linearVelocity = bulletDirection * _data.shootingSpeed;
+
+                    Debug.Log("Enemy shot a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
+                    Debug.DrawLine(_bullets[i].transform.position, _player.transform.position, Color.red, 2f);
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(_shootingSpeed);
         }
         yield return null;
     }
@@ -144,5 +190,16 @@ public class NpcController : MonoBehaviour
             _weapon.transform.position = _shootPos.position;
             _weapon.transform.localEulerAngles = _shootPos.localEulerAngles;
         }
+    }
+
+    public void DeactivateBullets()
+    {
+        foreach (GameObject bullet in _bullets)
+            bullet.SetActive(false);
+    }
+
+    private void OnPause_PauseGame(bool isPaused)
+    {
+        _isPaused = isPaused;
     }
 }

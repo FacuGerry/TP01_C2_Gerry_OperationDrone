@@ -5,9 +5,9 @@ public class StateWalk : EnemyStates
 {
     private int _index = 0;
 
-    public override void Initialize(Animator animator, Rigidbody rigidbody, NpcController npcPatrol, NavMeshAgent agent)
+    public override void Initialize(Animator animator, Rigidbody rigidbody, NpcController npcPatrol, NavMeshAgent agent, GameObject player)
     {
-        base.Initialize(animator, rigidbody, npcPatrol, agent);
+        base.Initialize(animator, rigidbody, npcPatrol, agent, player);
         state = StateType.Walk;
     }
 

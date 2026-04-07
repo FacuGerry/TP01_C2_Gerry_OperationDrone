@@ -28,6 +28,16 @@ public class HealthSystem : MonoBehaviour
 
     private void OnPlayerCrashed_ReduceHealth(int damage)
     {
+        ChangeHealth(damage);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        ChangeHealth(damage);
+    }
+
+    private void ChangeHealth(int damage)
+    {
         _health -= damage;
         Debug.Log("Player damaged by " + damage + " points");
         if (_health <= 0)

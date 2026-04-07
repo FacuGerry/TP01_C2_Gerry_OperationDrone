@@ -22,19 +22,36 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _time;
 
     private bool _isChanging = false;
+    private bool _canMove = true;
+    private bool _isPaused = false;
 
     private void Awake()
     {
         transform.localEulerAngles = Vector3.zero;
     }
 
+    private void OnEnable()
+    {
+        HealthSystem.OnPlayerDie += OnPlayerDie_StopMovement;
+        PauseGame.OnPause += OnPause_PauseGame;
+    }
+
+    private void OnDisable()
+    {
+        HealthSystem.OnPlayerDie -= OnPlayerDie_StopMovement;
+        PauseGame.OnPause -= OnPause_PauseGame;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyUp(_keys.changePOV))
-            _isChanging = !_isChanging;
+        if (_canMove && !_isPaused)
+        {
+            if (Input.GetKeyUp(_keys.changePOV))
+                _isChanging = !_isChanging;
 
-        ChangePOV();
-        Rotation();
+            ChangePOV();
+            Rotation();
+        }
     }
 
     private void ChangePOV()
@@ -78,5 +95,15 @@ public class CameraController : MonoBehaviour
 
             transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, 0);
         }
+    }
+
+    private void OnPlayerDie_StopMovement()
+    {
+        _canMove = false;
+    }
+
+    private void OnPause_PauseGame(bool isPaused)
+    {
+        _isPaused = isPaused;
     }
 }
