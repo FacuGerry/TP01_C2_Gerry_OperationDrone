@@ -10,9 +10,6 @@ public class StatsDataSO : ScriptableObject
     public int life;
     public float speed;
 
-    [Header("Enemy")]
-    public float chanceToBeEnemy;
-
     [Header("Player")]
     public float movementSpeedHor;
     public float movementSpeedVer;

@@ -27,7 +27,7 @@ public class NpcController : MonoBehaviour
     private Rigidbody _rb;
     private NavMeshAgent _agent;
 
-    public bool isEnemy { get; private set; }
+    public bool isEnemy { get; set; }
 
     private bool _isShooting;
 
@@ -56,12 +56,6 @@ public class NpcController : MonoBehaviour
     private void Start()
     {
         transform.position = new Vector3(positions[0].x, transform.position.y, positions[0].z);
-
-        float rand = UnityEngine.Random.value;
-        if (rand >= _data.chanceToBeEnemy)
-            isEnemy = true;
-        else
-            isEnemy = false;
 
         SwitchState(FindState(StateType.Walk));
 
