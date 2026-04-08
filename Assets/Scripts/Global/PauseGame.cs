@@ -14,14 +14,31 @@ public class PauseGame : MonoBehaviour
         OnPause?.Invoke(_isPaused);
     }
 
+    private void OnEnable()
+    {
+        UiPauseMenu.OnBackClicked += OnBackClicked_Unpause;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(_keys.pause) || Input.GetKeyDown(_keys.pause2) || Input.GetKeyDown(_keys.pause3))
-        {
-            _isPaused = !_isPaused;
-            OnPause?.Invoke(_isPaused);
-        }
+            ChangePause();
+    }
 
+    private void OnDisable()
+    {
+        UiPauseMenu.OnBackClicked += OnBackClicked_Unpause;
+    }
+
+    private void ChangePause()
+    {
+        _isPaused = !_isPaused;
+        OnPause?.Invoke(_isPaused);
         Time.timeScale = _isPaused ? 0.0f : 1.0f;
+    }
+
+    private void OnBackClicked_Unpause()
+    {
+        ChangePause();
     }
 }

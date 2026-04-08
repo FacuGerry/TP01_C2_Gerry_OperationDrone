@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 
 public class NpcController : MonoBehaviour
 {
+    public static event Action OnNpcShoot;
+
     public List<Vector3> positions = new List<Vector3>();
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _placeToAim;
     [SerializeField] private Animator _anim;
     [SerializeField] private StatsDataSO _data;
 
@@ -23,8 +26,6 @@ public class NpcController : MonoBehaviour
     private EnemyStates currentState;
     private Rigidbody _rb;
     private NavMeshAgent _agent;
-
-    private List<Rigidbody> _bulletRb = new List<Rigidbody>();
 
     public bool isEnemy { get; private set; }
 
@@ -56,7 +57,7 @@ public class NpcController : MonoBehaviour
     {
         transform.position = new Vector3(positions[0].x, transform.position.y, positions[0].z);
 
-        float rand = Random.value;
+        float rand = UnityEngine.Random.value;
         if (rand >= _data.chanceToBeEnemy)
             isEnemy = true;
         else
@@ -106,19 +107,16 @@ public class NpcController : MonoBehaviour
             if (bullet != null)
             {
                 bullet.transform.position = _bulletShootPos.position;
-                bullet.transform.rotation = _bulletShootPos.rotation;
                 bullet.SetActive(true);
 
-                Vector3 playerPos = _player.transform.position;
-                playerPos.y = bullet.transform.position.y;
-
+                Vector3 playerPos = _placeToAim.transform.position;
                 Vector3 bulletDirection = (playerPos - bullet.transform.position).normalized;
 
                 rb.linearVelocity = bulletDirection * _data.shootingSpeed;
 
                 Debug.Log("Enemy shot a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
-                Debug.DrawLine(bullet.transform.position, _player.transform.position, Color.red, 2f);
             }
+            OnNpcShoot?.Invoke();
             yield return new WaitForSeconds(_shootingSpeed);
         }
         yield return null;

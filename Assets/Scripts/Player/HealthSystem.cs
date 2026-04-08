@@ -4,14 +4,17 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     public static event Action<int, int> OnUpdateLife;
+    public static event Action OnPlayerDamaged;
     public static event Action OnPlayerDie;
 
-    [SerializeField] private int _maxHealth;
+    [SerializeField] private StatsDataSO _data;
 
+    private int _maxHealth;
     private int _health;
 
     private void Start()
     {
+        _maxHealth = _data.life;
         _health = _maxHealth;
         OnUpdateLife?.Invoke(_health, _maxHealth);
     }
@@ -38,6 +41,7 @@ public class HealthSystem : MonoBehaviour
 
     private void ChangeHealth(int damage)
     {
+        OnPlayerDamaged?.Invoke();
         _health -= damage;
         Debug.Log("Player damaged by " + damage + " points");
         if (_health <= 0)

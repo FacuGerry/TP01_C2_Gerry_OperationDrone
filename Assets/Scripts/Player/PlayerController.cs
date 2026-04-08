@@ -6,11 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyBindingsSO _keys;
 
     [Header("Movement")]
-    [SerializeField] private float _movementSpeedHor = 10;
-    [SerializeField] private float _movementSpeedVer = 10;
-    [SerializeField] private float _maxSpeed;
-
-    public float readableMaxSpeed { get; private set; }
+    [SerializeField] private StatsDataSO _data;
 
     public Rigidbody _rb { get; private set; }
 
@@ -24,7 +20,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        readableMaxSpeed = _maxSpeed;
         _isAlive = true;
     }
 
@@ -66,37 +61,37 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(_keys.right))
             direction = new Vector3(transform.right.x, 0, transform.right.z);
 
-        _rb.AddForce(direction * _movementSpeedHor, ForceMode.Force);
+        _rb.AddForce(direction * _data.movementSpeedHor, ForceMode.Force);
     }
 
     private void MovementVer()
     {
         if (Input.GetKey(_keys.up))
-            _rb.AddForce(Vector3.up * _movementSpeedVer, ForceMode.Force);
+            _rb.AddForce(Vector3.up * _data.movementSpeedVer, ForceMode.Force);
 
         if (Input.GetKey(_keys.down))
-            _rb.AddForce(Vector3.down * _movementSpeedVer, ForceMode.Force);
+            _rb.AddForce(Vector3.down * _data.movementSpeedVer, ForceMode.Force);
     }
 
     private void CheckSpeed()
     {
-        if (_rb.linearVelocity.x >= readableMaxSpeed)
-            _rb.linearVelocity = new Vector3(readableMaxSpeed, _rb.linearVelocity.y, _rb.linearVelocity.z);
+        if (_rb.linearVelocity.x >= _data.maxSpeed)
+            _rb.linearVelocity = new Vector3(_data.maxSpeed, _rb.linearVelocity.y, _rb.linearVelocity.z);
 
-        if (_rb.linearVelocity.y >= readableMaxSpeed)
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, readableMaxSpeed, _rb.linearVelocity.z);
+        if (_rb.linearVelocity.y >= _data.maxSpeed)
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _data.maxSpeed, _rb.linearVelocity.z);
 
-        if (_rb.linearVelocity.z >= readableMaxSpeed)
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, readableMaxSpeed);
+        if (_rb.linearVelocity.z >= _data.maxSpeed)
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, _data.maxSpeed);
 
-        if (_rb.linearVelocity.x <= -readableMaxSpeed)
-            _rb.linearVelocity = new Vector3(-readableMaxSpeed, _rb.linearVelocity.y, _rb.linearVelocity.z);
+        if (_rb.linearVelocity.x <= -_data.maxSpeed)
+            _rb.linearVelocity = new Vector3(-_data.maxSpeed, _rb.linearVelocity.y, _rb.linearVelocity.z);
 
-        if (_rb.linearVelocity.y <= -readableMaxSpeed)
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, -readableMaxSpeed, _rb.linearVelocity.z);
+        if (_rb.linearVelocity.y <= -_data.maxSpeed)
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, -_data.maxSpeed, _rb.linearVelocity.z);
 
-        if (_rb.linearVelocity.z <= -readableMaxSpeed)
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, -readableMaxSpeed);
+        if (_rb.linearVelocity.z <= -_data.maxSpeed)
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _rb.linearVelocity.y, -_data.maxSpeed);
     }
 
     private void OnPlayerDie_StopMovement()

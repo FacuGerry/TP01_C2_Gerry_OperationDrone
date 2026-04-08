@@ -5,8 +5,8 @@ public class Bullets : MonoBehaviour
 {
     public static Bullets instance;
     public List<GameObject> pooledObjects = new List<GameObject>();
-    [SerializeField] private GameObject objectToPool;
-    [SerializeField] private int amountToPool;
+    [SerializeField] private GameObject _objectToPool;
+    [SerializeField] private int _amountToPool;
 
     private List<Rigidbody> _pooledRigidbodies = new List<Rigidbody>();
 
@@ -24,9 +24,10 @@ public class Bullets : MonoBehaviour
     private void Start()
     {
         GameObject tmp;
-        for (int i = 0; i < amountToPool; i++)
+        for (int i = 0; i < _amountToPool; i++)
         {
-            tmp = Instantiate(objectToPool);
+            tmp = Instantiate(_objectToPool);
+            tmp.transform.parent = gameObject.transform;
             tmp.SetActive(false);
 
             pooledObjects.Add(tmp);
@@ -36,7 +37,7 @@ public class Bullets : MonoBehaviour
 
     public GameObject GetPooledObject()
     {
-        for (int i = 0; i < amountToPool; i++)
+        for (int i = 0; i < _amountToPool; i++)
         {
             if (!pooledObjects[i].activeInHierarchy)
             {
@@ -48,7 +49,7 @@ public class Bullets : MonoBehaviour
 
     public Rigidbody GetRigidbody(GameObject bullet)
     {
-        for (int i = 0; i < amountToPool; i++)
+        for (int i = 0; i < _amountToPool; i++)
         {
             if (bullet == pooledObjects[i])
             {

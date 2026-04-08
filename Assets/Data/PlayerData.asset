@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61eb07516e5d6a140a9c8e6f650d19bf, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::StatsDataSO
-  level: 1
+  level: 0
   life: 100
   speed: 15
   chanceToBeEnemy: 0
+  movementSpeedHor: 7
+  movementSpeedVer: 5
+  maxSpeed: 15
   distanceToShoot: 10
   shootingSpeed: 10
   shootingDamage: 5

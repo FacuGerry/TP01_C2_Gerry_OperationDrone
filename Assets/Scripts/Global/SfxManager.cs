@@ -37,6 +37,16 @@ public class SfxManager : MonoBehaviour
 
     private void OnEnable()
     {
+        HealthSystem.OnPlayerDamaged += OnPlayerDamaged_PlayClip;
+        HealthSystem.OnPlayerDie += OnPlayerDie_PlayClip;
+
+        NpcHealthSystem.OnNpcDamaged += OnNpcDamaged_PlayClip;
+        NpcHealthSystem.OnNpcDie += OnNpcDie_PlayClip;
+
+        PlayerShoot.OnPlayerShoot += OnPlayerShoot_PlayClip;
+        PlayerShoot.OnPlayerSecondShoot += OnPlayerSecondShoot_PlayClip;
+
+        NpcController.OnNpcShoot += OnEnemyShoot_PlayClip;
 
         UiButtonHoverSFXEvent.OnButtonHover += OnButtonHover_PlayClip;
         UiButtonHoverSFXEvent.OnButtonClick += OnButtonClick_PlayClip;
@@ -44,9 +54,54 @@ public class SfxManager : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        HealthSystem.OnPlayerDamaged -= OnPlayerDamaged_PlayClip;
+        HealthSystem.OnPlayerDie -= OnPlayerDie_PlayClip;
+
+        NpcHealthSystem.OnNpcDamaged -= OnNpcDamaged_PlayClip;
+        NpcHealthSystem.OnNpcDie -= OnNpcDie_PlayClip;
+
+        PlayerShoot.OnPlayerShoot -= OnPlayerShoot_PlayClip;
+        PlayerShoot.OnPlayerSecondShoot -= OnPlayerSecondShoot_PlayClip;
+
+        NpcController.OnNpcShoot -= OnEnemyShoot_PlayClip;
+
         UiButtonHoverSFXEvent.OnButtonHover -= OnButtonHover_PlayClip;
         UiButtonHoverSFXEvent.OnButtonClick -= OnButtonClick_PlayClip;
+    }
+
+    private void OnPlayerShoot_PlayClip()
+    {
+        _sfx.PlayOneShot(_playerShoot);
+    }
+
+    private void OnPlayerSecondShoot_PlayClip()
+    {
+        _sfx.PlayOneShot(_playerSecondShoot);
+    }
+
+    private void OnEnemyShoot_PlayClip()
+    {
+        _sfx.PlayOneShot(_enemyShoot);
+    }
+
+    private void OnPlayerDamaged_PlayClip()
+    {
+        _sfx.PlayOneShot(_playerDamaged);
+    }
+
+    private void OnPlayerDie_PlayClip()
+    {
+        _sfx.PlayOneShot(_playerDie);
+    }
+
+    private void OnNpcDamaged_PlayClip()
+    {
+        _sfx.PlayOneShot(_enemyDamaged);
+    }
+
+    private void OnNpcDie_PlayClip(bool isEnemy)
+    {
+        _sfx.PlayOneShot(_enemyDie);
     }
 
     private void OnButtonHover_PlayClip()

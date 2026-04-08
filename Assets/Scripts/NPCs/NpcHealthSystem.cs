@@ -4,6 +4,7 @@ using UnityEngine;
 public class NpcHealthSystem : MonoBehaviour
 {
     public static event Action<bool> OnNpcDie;
+    public static event Action OnNpcDamaged;
 
     [SerializeField] private StatsDataSO _data;
     [SerializeField] private PlayerShoot _player;
@@ -18,11 +19,12 @@ public class NpcHealthSystem : MonoBehaviour
 
     private void Start()
     {
-        _life = _data.life;
+        _life = _data.life * ((_data.level / 10) + 1);
     }
 
     private void TakeDamage(int damage)
     {
+        OnNpcDamaged?.Invoke();
         _life -= damage;
         if (_life <= 0)
         {

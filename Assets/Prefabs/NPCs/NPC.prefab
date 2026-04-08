@@ -113,62 +113,12 @@ MonoBehaviour:
   - {x: 38, y: 0, z: -81}
   - {x: 6, y: 0, z: -81}
   _player: {fileID: 0}
+  _placeToAim: {fileID: 0}
   _anim: {fileID: 2393653726971359976}
   _data: {fileID: 11400000, guid: 0579b6e1c9060e74aa9d9e1848404afa, type: 2}
   _weapon: {fileID: 2409710268297319711}
   _walkPos: {fileID: 8248165822323686615}
   _shootPos: {fileID: 8219402256781319196}
-  _bullets:
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
-  - {fileID: 2989000923634411228, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
   _bulletShootPos: {fileID: 1769051708808729162}
 --- !u!195 &4506467054453663176
 NavMeshAgent:

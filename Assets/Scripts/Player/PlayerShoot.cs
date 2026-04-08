@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
+    public static event Action OnPlayerShoot;
+    public static event Action OnPlayerSecondShoot;
+
     [SerializeField] private KeyBindingsSO _keys;
     [SerializeField] private Transform _shootingPos;
     [SerializeField] private float _normalBulletDistance;
@@ -84,6 +87,7 @@ public class PlayerShoot : MonoBehaviour
     {
         while (_isShooting)
         {
+            OnPlayerShoot?.Invoke();
             RaycastHit ray;
             if (Physics.Raycast(_shootingPos.transform.position, transform.forward, out ray, _normalBulletDistance))
                 if (ray.collider != null && ray.collider.TryGetComponent(out NpcHealthSystem npc))
@@ -113,6 +117,8 @@ public class PlayerShoot : MonoBehaviour
                 Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
 
                 isSearching = false;
+
+                OnPlayerSecondShoot?.Invoke();
             }
         }
     }
