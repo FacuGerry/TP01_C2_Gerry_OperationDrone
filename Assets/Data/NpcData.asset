@@ -15,10 +15,9 @@ MonoBehaviour:
   level: 0
   life: 50
   speed: 3
-  chanceToBeEnemy: 0.5
   movementSpeedHor: 0
   movementSpeedVer: 0
   maxSpeed: 0
-  distanceToShoot: 5
-  shootingSpeed: 1
-  shootingDamage: 10
+  distanceToShoot: 20
+  shootingSpeed: 5
+  shootingDamage: 5

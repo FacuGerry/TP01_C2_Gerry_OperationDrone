@@ -24,8 +24,10 @@ public class StateShoot : EnemyStates
         _patrol.EnableShooting(true);
 
         Vector3 playerPos = _player.transform.position;
-        playerPos.y = _patrol.transform.position.y;
-        _patrol.transform.LookAt(playerPos);
+
+        Quaternion lookAt = Quaternion.LookRotation(_player.transform.position - _patrol.transform.position);
+        Quaternion correction = Quaternion.Euler(0, 45, 0);
+        _patrol.transform.rotation = lookAt * correction;
     }
 
     public override void OnExit()

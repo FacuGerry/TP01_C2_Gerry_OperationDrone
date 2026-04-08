@@ -27,7 +27,7 @@ public class NpcController : MonoBehaviour
     private Rigidbody _rb;
     private NavMeshAgent _agent;
 
-    public bool isEnemy { get; set; }
+    public bool isEnemy;
 
     private bool _isShooting;
 
