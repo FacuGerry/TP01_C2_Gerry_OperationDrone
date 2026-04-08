@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public class StateWalk : EnemyStates
 {
@@ -20,7 +21,8 @@ public class StateWalk : EnemyStates
 
     public override void OnUpdate()
     {
-        if (_rb.position.x == _patrol.positions[_index].x && _rb.position.z == _patrol.positions[_index].z)
+        float distance = Vector3.Distance(_patrol.transform.position, _patrol.positions[_index]);
+        if (distance < 0.5f)
         {
             _index++;
             if (_index > _patrol.positions.Count - 1)
