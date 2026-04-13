@@ -6,13 +6,13 @@
 
 Controls / Controles:
 
-WASD -> Movement / Movimiento
-Space / Espacio -> Go up / Ir hacia arriba
-Left Ctrl / Control izq -> Go down / Ir hacia abajo
-Left click / Click izq -> Shoot / Disparar
-F -> Change camera / Cambiar cámara
-Q -> Secondary shoot / Disparo secundario
-T -> Toogle ray for aiming / Encender rayo para apuntar
-Cursor -> Look around / Mirar
+* WASD -> Movement / Movimiento
+* Space / Espacio -> Go up / Ir hacia arriba
+* Left Ctrl / Control izq -> Go down / Ir hacia abajo
+* Left click / Click izq -> Shoot / Disparar
+* F -> Change camera / Cambiar cámara
+* Q -> Secondary shoot / Disparo secundario
+* T -> Toogle ray for aiming / Encender rayo para apuntar
+* Cursor -> Look around / Mirar
 
 Itch: https://facugerry.itch.io/operation-drone
