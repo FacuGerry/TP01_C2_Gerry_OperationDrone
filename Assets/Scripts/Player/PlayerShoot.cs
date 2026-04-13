@@ -116,6 +116,11 @@ public class PlayerShoot : MonoBehaviour
                 _bulletRb[i].linearVelocity = bulletDirection * _bulletSpeed;
                 Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
 
+                // NEW METHOD
+                Vector3 destination = transform.position + transform.forward * _bulletDistance;
+                destination.y = 0;
+                _bullets[i].transform.Translate(destination);
+
                 isSearching = false;
 
                 OnPlayerSecondShoot?.Invoke();
