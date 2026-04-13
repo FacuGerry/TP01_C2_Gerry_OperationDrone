@@ -4731,10 +4731,9 @@ MonoBehaviour:
   - {fileID: 361934910}
   - {fileID: 1129532380}
   - {fileID: 1318581695}
-  _bulletSpeed: 10
-  _bulletHeight: 10
-  _bulletDistance: 10
-  _bulletDamage: 10
+  _bulletDuration: 5
+  _bulletDistance: 50
+  _bulletDamage: 500
   _cheatLine: {fileID: 1887943608}
 --- !u!114 &429210800
 MonoBehaviour:
@@ -17771,7 +17770,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1887943610
 MeshRenderer:
   m_ObjectHideFlags: 0

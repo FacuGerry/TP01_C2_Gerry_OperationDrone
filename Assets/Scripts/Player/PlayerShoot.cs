@@ -14,13 +14,12 @@ public class PlayerShoot : MonoBehaviour
 
     [Header("Second bullet stats")]
     [SerializeField] private List<GameObject> _bullets = new List<GameObject>();
-    [SerializeField] private float _bulletSpeed;
-    [SerializeField] private float _bulletHeight;
+    [SerializeField] private float _bulletDuration;
     [SerializeField] private float _bulletDistance;
     [SerializeField] private int _bulletDamage;
     [SerializeField] private GameObject _cheatLine;
 
-    private List<Rigidbody> _bulletRb = new List<Rigidbody>();
+    private List<BulletMovement> _bulletMovements = new List<BulletMovement>();
     private bool _isShooting = false;
     private bool _startedShooting = false;
 
@@ -30,7 +29,7 @@ public class PlayerShoot : MonoBehaviour
     private void Awake()
     {
         foreach (GameObject bullet in _bullets)
-            _bulletRb.Add(bullet.GetComponent<Rigidbody>());
+            _bulletMovements.Add(bullet.GetComponent<BulletMovement>());
     }
 
     private void OnEnable()
@@ -101,29 +100,15 @@ public class PlayerShoot : MonoBehaviour
 
     private void SecondShoot()
     {
-        bool isSearching = true;
         for (int i = 0; i < _bullets.Count; i++)
         {
-            if (!_bullets[i].activeInHierarchy && isSearching)
+            if (!_bullets[i].activeInHierarchy)
             {
-                _bullets[i].transform.position = _shootingPos.position;
-                _bullets[i].SetActive(true);
-
-                Vector3 targetPos = transform.position + transform.forward * _bulletDistance;
-                targetPos.y += _bulletHeight;
-                Vector3 bulletDirection = (targetPos - _bullets[i].transform.position).normalized;
-
-                _bulletRb[i].linearVelocity = bulletDirection * _bulletSpeed;
-                Debug.Log("Player threw a bullet to (" + bulletDirection.x + ", " + bulletDirection.y + ", " + bulletDirection.z + ")");
-
                 // NEW METHOD
-                Vector3 destination = transform.position + transform.forward * _bulletDistance;
-                destination.y = 0;
-                _bullets[i].transform.Translate(destination);
-
-                isSearching = false;
-
+                _bullets[i].SetActive(true);
+                _bulletMovements[i].Shoot(_shootingPos.position, _bulletDistance, _bulletDuration, gameObject);
                 OnPlayerSecondShoot?.Invoke();
+                return;
             }
         }
     }
